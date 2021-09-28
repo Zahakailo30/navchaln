@@ -1,22 +1,51 @@
 import random
 def input_array():
-    n = int(input("Введіть розмір масиву: "))
-    array = []
-    for i in range(n):
-        a = int(input("Введіть елемент масиву: "))
-        array.append(a)
-    print(array)
+    while True:
+        try:
+            n = int(input("Введіть розмір масиву: "))
+            if n <= 0:
+                print("Введіть правильний розмір!")
+                continue
+            array = []
+            for i in range(n):
+                a = int(input("Введіть елемент масиву: "))
+                array.append(a)
+            print(array)
+            break
+        except ValueError:
+            print("Неправильний тип!")
     return array
-def generate_array():
-    n = int(input("Введіть розмір масиву: "))
-    print("Введіть діпазон значень для генерації.")
-    a = int(input("A: "))
-    b = int(input("B: "))
-    array = []
-    for i in range(n):
-        array.append(random.randint(a, b))
-    print(array)
+
+def input_diap():
+    while True:
+        try:
+            print("Введіть діпазон значень для генерації.")
+            a = int(input("A: "))
+            b = int(input("B: "))
+            if a > b:
+                a, b = b, a
+
+            break
+        except ValueError:
+            print("Неправильний тип")
+    return a, b
+
+def generate_array(a,b):
+    while True:
+        try:
+            n = int(input("Введіть розмір масиву: "))
+            if n <= 0:
+                print("Введіть правильний розмір!")
+                continue
+            array = []
+            for i in range(n):
+                array.append(random.randint(a, b))
+            print(array)
+            break
+        except ValueError:
+            print("Неправильний тип!")
     return array
+
 def mergeSort(array):
     if len(array) > 1:
         exchanges = comparisons = 0
@@ -55,28 +84,30 @@ def mergeSort(array):
         operation = exchanges + comparisons
         return operation
 
-try:
-    print("Оберіть опцію:\n 1 - ввести масив \n 2 - згенерувати масив \n 3 - завершити роботу \n", end=" ")
-    P = int(input(""))
-    while (P == 1 or P == 2) :
-        while (P == 1):
-            array1 = input_array()
-            oper1 = mergeSort(array1)
-            print(array1)
-            print("Кількість операцій: ", oper1)
-            print("Оберіть опцію:\n 1 - ввести масив \n 2 - згенерувати масив \n 3 - завершити роботу \n", end=" ")
-            P = int(input(""))
-        while (P == 2):
-            array2 = generate_array()
-            oper2 = mergeSort(array2)
-            print(array2)
-            print("Кількість операцій: ", oper2)
-            print("Оберіть опцію:\n 1 - ввести масив \n 2 - згенерувати масив \n 3 - завершити роботу \n", end=" ")
-            P = int(input(""))
-        if (P == 3):
-            print("Роботу завершено")
-except ValueError:
-    print("Введено неправильний тип даних!")
-except Exception:
-    print("Помилка!")
 
+print("Оберіть опцію:\n 1 - ввести масив \n 2 - згенерувати масив \n 3 - завершити роботу \n", end=" ")
+P = int(input(""))
+
+while P:
+    if P == 1:
+        array = input_array()
+        oper1 = mergeSort(array)
+        print(array)
+        print("Кількість операцій: ", oper1)
+        print("Оберіть опцію:\n 1 - ввести масив \n 2 - згенерувати масив \n 3 - завершити роботу \n", end=" ")
+        P = int(input(""))
+    elif P == 2:
+        a, b = input_diap()
+        array2 = generate_array(a, b)
+        oper2 = mergeSort(array2)
+        print(array2)
+        print("Кількість операцій: ", oper2)
+        print("Оберіть опцію:\n 1 - ввести масив \n 2 - згенерувати масив \n 3 - завершити роботу \n", end=" ")
+        P = int(input(""))
+    elif P != 1 and P != 2 and P != 3:
+        print("Такої опції не існує!")
+        print("Оберіть опцію:\n 1 - ввести масив \n 2 - згенерувати масив \n 3 - завершити роботу \n", end=" ")
+        P = int(input(""))
+    elif P == 3:
+        print("Роботу завершено")
+        break
